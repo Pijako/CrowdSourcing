@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/tpichel/AndroidStudioProjects/CS/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v19/values-v19.xml",
+            "map": [
+                {
+                    "source": "/mnt/nosave/tpichel/.gradle/caches/transforms-1/files-1.1/leanback-v17-26.1.0.aar/535fa9e787c49f5331a3b081f0f7687b/res/values-v19/values-v19.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "10",
+                        "endColumns": "12",
+                        "endOffsets": "659"
+                    }
+                }
+            ]
+        }
+    ]
+}

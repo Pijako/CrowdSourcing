@@ -1,0 +1,4 @@
+#Fri Jan 18 11:05:20 CET 2019
+base.0=/home/tpichel/AndroidStudioProjects/CS/app/build/intermediates/transforms/dexMerger/debug/60
+path.0=classes.dex
+renamed.0=classes.dex
