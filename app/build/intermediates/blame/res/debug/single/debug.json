@@ -1404,6 +1404,10 @@
         "source": "/mnt/nosave/tpichel/.gradle/caches/transforms-1/files-1.1/leanback-v17-26.1.0.aar/535fa9e787c49f5331a3b081f0f7687b/res/drawable/lb_playback_now_playing_bar.xml"
     },
     {
+        "merged": "/home/tpichel/AndroidStudioProjects/CS/app/build/intermediates/res/merged/debug/layout_activity_sensor.xml.flat",
+        "source": "/home/tpichel/AndroidStudioProjects/CS/app/src/main/res/layout/activity_sensor.xml"
+    },
+    {
         "merged": "/home/tpichel/AndroidStudioProjects/CS/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_notification_bg_normal_pressed.9.png.flat",
         "source": "/mnt/nosave/tpichel/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/df7f321455baea333da44e082da40719/res/drawable-hdpi-v4/notification_bg_normal_pressed.9.png"
     },
@@ -1606,6 +1610,10 @@
     {
         "merged": "/home/tpichel/AndroidStudioProjects/CS/app/build/intermediates/res/merged/debug/layout_lb_media_list_header.xml.flat",
         "source": "/mnt/nosave/tpichel/.gradle/caches/transforms-1/files-1.1/leanback-v17-26.1.0.aar/535fa9e787c49f5331a3b081f0f7687b/res/layout/lb_media_list_header.xml"
+    },
+    {
+        "merged": "/home/tpichel/AndroidStudioProjects/CS/app/build/intermediates/res/merged/debug/layout_content_sensor.xml.flat",
+        "source": "/home/tpichel/AndroidStudioProjects/CS/app/src/main/res/layout/content_sensor.xml"
     },
     {
         "merged": "/home/tpichel/AndroidStudioProjects/CS/app/build/intermediates/res/merged/debug/color-v11_abc_background_cache_hint_selector_material_light.xml.flat",

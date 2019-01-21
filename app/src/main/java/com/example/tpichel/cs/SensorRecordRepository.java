@@ -41,4 +41,8 @@ public class SensorRecordRepository {
         sensorRecordDatabase.recordDao().drop();
     }
 
+    public void close(){
+        sensorRecordDatabase.close();
+    }
+
 }

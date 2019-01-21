@@ -22,6 +22,7 @@ public class WifiRecordRepository {
     public WifiRecordRepository(Context context) {
         recordDatabase = Room.databaseBuilder(context, AppDatabase.class, DB_NAME)
                         .allowMainThreadQueries()
+                        .fallbackToDestructiveMigration()
                         .build();
     }
 
@@ -39,6 +40,10 @@ public class WifiRecordRepository {
 
     public void dropTable(){
         recordDatabase.recordDao().drop();
+    }
+
+    public void close(){
+        recordDatabase.close();
     }
 
 }

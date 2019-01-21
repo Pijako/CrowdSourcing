@@ -39,4 +39,5 @@ public interface WifiRecordDao {
 
     @Query("DELETE FROM WifiRecord WHERE 1=1")
     void drop();
+
 }

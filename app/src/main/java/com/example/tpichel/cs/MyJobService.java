@@ -24,12 +24,14 @@ public class MyJobService extends JobService {
 
     private Random rn = new Random();
     WifiMeasureTask wifiMeasureTask = new WifiMeasureTask();
+    SensorMeasureTask sensorMeasureTask = new SensorMeasureTask();
 
     @Override
     public boolean onStartJob(JobParameters params){
         Log.d("[JOB]", "onStartJob id = " + params.getJobId());
         //Mesure par AsyncTask
         wifiMeasureTask.execute();
+        sensorMeasureTask.execute();
 
         return true;
     }
@@ -41,6 +43,7 @@ public class MyJobService extends JobService {
         Log.d("[JOB]", "onStopJob id = " + params.getJobId());
         //Arrêter l'AsyncTask
         wifiMeasureTask.cancel(true);
+        //sensorMeasureTask.cancel(true);
 
         return true;
     }
@@ -48,7 +51,6 @@ public class MyJobService extends JobService {
     private class WifiMeasureTask extends AsyncTask<Context, Void, List<ScanResult>> {
 
         private Context context;
-        private AppDatabase db;
 
         @Override
         protected List<ScanResult> doInBackground(Context... contexts) {
@@ -61,7 +63,6 @@ public class MyJobService extends JobService {
             System.out.println("[SCAN] " + "[ASYNC]" + " AsyncTask Started");
 
             WifiRecordRepository recordRepository = new WifiRecordRepository(getApplicationContext());
-            //recordRepository.dropTable();
 
             List<ScanResult> results = wifiManager.getScanResults();
             for (ScanResult r : results){
@@ -81,8 +82,8 @@ public class MyJobService extends JobService {
                 else{
                     recordRepository.update(record);
                 }
-
             }
+            recordRepository.close();
 
             return results;
         }
@@ -93,56 +94,62 @@ public class MyJobService extends JobService {
 
     }
 
-    private class SensorMesureTask extends AsyncTask<Context, Void, List<ScanResult>> {
+    private class SensorMeasureTask extends AsyncTask<SensorEvent, Void, Void> implements SensorEventListener {
 
-        private Context context;
         private AppDatabase db;
 
-        private SensorManager mSensorManager = null;
-        private Sensor mAccelerometer = null;
-
-        final SensorEventListener mSensorEventListener = new SensorEventListener() {
-
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                // Que faire en cas de changement de précision ?
-
-            }
-
-
-            public void onSensorChanged(SensorEvent sensorEvent) {
-                // Que faire en cas d'évènements sur le capteur ?
-
-            }
-
-        };
+        private SensorManager mSensorManager;
+        private Sensor mAccelerometer;
+        private double alpha = 0.8;
+        private double gravity[] = {0.0, 0.0, 0.0};
+        private double linear_acceleration[] = {0.0, 0.0, 0.0};
+        private int samplingPeriodUs = 10000000;
+        //private Sensor magnetometre = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         @Override
-        protected List<ScanResult> doInBackground(Context... contexts) {
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            // Que faire en cas d'évènements sur le capteur ?
+            gravity[0] = alpha * gravity[0] + (1 - alpha) * sensorEvent.values[0];
+            gravity[1] = alpha * gravity[1] + (1 - alpha) * sensorEvent.values[1];
+            gravity[2] = alpha * gravity[2] + (1 - alpha) * sensorEvent.values[2];
+            Long tsLong = System.currentTimeMillis()/1000;
+            String timestamp = tsLong.toString();
 
-            this.context = getApplicationContext();
-            List<ScanResult> results = null;
-            mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            linear_acceleration[0] = sensorEvent.values[0] - gravity[0];
+            linear_acceleration[1] = sensorEvent.values[1] - gravity[1];
+            linear_acceleration[2] = sensorEvent.values[2] - gravity[2];
 
-        /*
-            for (ScanResult r : results){
-                System.out.println("[SCAN] " + "[RESULT]" + " " + r.SSID);
+            //System.out.println("[DATA] "+"[ACC] " + linear_acceleration[0] + " " + linear_acceleration[1] + " " + linear_acceleration[2]);
+            SensorRecordRepository recordRepository = new SensorRecordRepository(getApplicationContext());
+            SensorRecord record = new SensorRecord();
+            record.sx = linear_acceleration[0];
+            record.sy = linear_acceleration[1];
+            record.sz = linear_acceleration[2];
+            record.timestamp = timestamp;
 
-                Long tsLong = System.currentTimeMillis()/1000;
-                String timestamp = tsLong.toString();
+            record.uid = recordRepository.getAll().size() + 1;
+            //recordRepository.insertAll(record);
+            //System.out.println("[DATA] "+"[WRITE] " + " NEW_RECORD"
+              //      + linear_acceleration[0] + " " + linear_acceleration[1] + " " + linear_acceleration[2]);
 
-                SensorRecord record = new SensorRecord();
+            recordRepository.close();
+        }
 
-                if(recordRepository.getBySSID(record.bssid).isEmpty()){
-                    recordRepository.insertAll(record);
-                }
-                else{
-                    recordRepository.update(record);
-                }
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy){
+            //empty
+        }
 
-            }
-        */
-            return results;
+        @Override
+        protected Void doInBackground(SensorEvent... events) {
+
+            System.out.println("[SENSORS] " + "[ASYNC]" + " Acc AsyncTask Started");
+            this.mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            this.mAccelerometer = this.mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            this.mSensorManager.registerListener(this, mAccelerometer, samplingPeriodUs);
+
+            return null;
+
         }
 
         protected void onPostExecute() {
