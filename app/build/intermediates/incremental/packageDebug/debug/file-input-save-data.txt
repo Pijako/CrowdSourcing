@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Tue Jan 22 10:50:45 CET 2019
+#Tue Jan 22 14:19:38 CET 2019
 2.base=/home/tpichel/AndroidStudioProjects/CS/app/build/intermediates/transforms/dexMerger/debug/16
 5.set=DEX
 0.path=classes.dex

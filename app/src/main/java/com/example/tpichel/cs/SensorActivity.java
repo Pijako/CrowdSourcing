@@ -1,5 +1,6 @@
 package com.example.tpichel.cs;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,7 @@ public class SensorActivity extends AppCompatActivity {
             XYSeries apsXY = new SimpleXYSeries(linearAcc, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Linear Acceleration");
             // définir le format de la courbe (ligne rouge, marqueurs bleus)
             LineAndPointFormatter series1Format = new LineAndPointFormatter(Color.RED, Color.BLUE, null, null);
+            //Définir les bornes de Y
             // ajouter la serie XY au plot:
             plot.addSeries(apsXY, series1Format);
         }
@@ -55,7 +57,17 @@ public class SensorActivity extends AppCompatActivity {
         {
             Log.i("[ACC]","No item in result query ");
         }
+    }
 
+    @Override
+    public void onBackPressed()
+    {
+        // code here to show dialog
+        super.onBackPressed();  // optional depending on your needs
+
+        setContentView(R.layout.activity_main);
+        Intent back = new Intent(SensorActivity.this, MainActivity.class);
+        startActivity(back);
     }
 
 }

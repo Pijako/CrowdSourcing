@@ -64,24 +64,25 @@ public class MyJobService extends JobService {
 
             WifiRecordRepository recordRepository = new WifiRecordRepository(getApplicationContext());
 
+            Long tsLong = System.currentTimeMillis()/1000;
+            String timestamp = tsLong.toString();
+
             List<ScanResult> results = wifiManager.getScanResults();
+
             for (ScanResult r : results){
                 System.out.println("[SCAN] " + "[RESULT]" + " " + r.SSID);
-
-                Long tsLong = System.currentTimeMillis()/1000;
-                String timestamp = tsLong.toString();
 
                 WifiRecord record = new WifiRecord();
                 record.bssid = r.SSID;
                 record.timestamp = timestamp;
                 record.uid = rn.nextInt();
 
-                if(recordRepository.getBySSID(record.bssid).isEmpty()){
-                    recordRepository.insertAll(record);
-                }
-                else{
-                    recordRepository.update(record);
-                }
+                //if(recordRepository.getBySSID(record.bssid).isEmpty()){
+                recordRepository.insertAll(record);
+                //}
+                //else{
+                    //recordRepository.update(record);
+                //}
             }
             recordRepository.close();
 
@@ -128,14 +129,19 @@ public class MyJobService extends JobService {
             record.timestamp = timestamp;
 
             List<SensorRecord> records = recordRepository.getAll();
-            record.uid = records.get(records.size()-1).uid + 1;
+            if(records.size() != 0){
+                record.uid = records.get(records.size()-1).uid + 1;
+            }
+            else{
+                record.uid = 0;
+            }
 
             if(records.size() > 840){
                 recordRepository.removeRecord(records.get(0));
             }
             recordRepository.insertAll(record);
-            System.out.println("[DATA] "+"[WRITE] " + " NEW_RECORD "
-                    + linear_acceleration[0] + " " + linear_acceleration[1] + " " + linear_acceleration[2]);
+            //System.out.println("[DATA] "+"[WRITE] " + " NEW_RECORD "
+              //      + linear_acceleration[0] + " " + linear_acceleration[1] + " " + linear_acceleration[2]);
 
             recordRepository.close();
         }

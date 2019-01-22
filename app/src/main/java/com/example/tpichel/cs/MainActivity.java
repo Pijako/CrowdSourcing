@@ -21,16 +21,6 @@ public class MainActivity extends AppCompatActivity {
         Button button1 = findViewById(R.id.button1);
         Button button2 = findViewById(R.id.button2);
 
-        /*
-        button1.setOnClickListener(new View.OnClickListener() {
-
-        f
-        button2.setOnClickListener(new View.OnClickListener() {
-
-        });
-
-        */
-
     }
 
     public void onClick1(View v) {

@@ -2,17 +2,36 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ap="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.example.tpichel.cs.ScanActivity">
 
-    <ListView
-        android:id="@+id/mlv"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    </ListView>
+        <com.androidplot.xy.XYPlot
+            android:id="@+id/plot2"
+            style="@style/APDefacto.Dark"
+            android:layout_width="match_parent"
+            android:layout_height="315dp"
+            ap:backgroundColor="@color/ap_gray"
+            ap:domainTitle="Dates"
+            ap:lineLabelRotationBottom="-45"
+            ap:lineLabels="left|bottom"
+            ap:rangeTitle="Nombre APs"
+            ap:title="Nombre APs" />
+
+        <ListView
+            android:id="@+id/mlv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
