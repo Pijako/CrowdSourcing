@@ -45,4 +45,12 @@ public class SensorRecordRepository {
         sensorRecordDatabase.close();
     }
 
+    public void removeRecord(SensorRecord record){
+        sensorRecordDatabase.sensorRecordDao().delete(record);
+    }
+
+    public List<SensorRecord> getByIds(int... ids){
+        return sensorRecordDatabase.sensorRecordDao().loadAllByIds(ids);
+    }
+
 }

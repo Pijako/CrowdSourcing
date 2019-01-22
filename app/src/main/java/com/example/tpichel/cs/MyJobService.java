@@ -127,10 +127,15 @@ public class MyJobService extends JobService {
             record.sz = linear_acceleration[2];
             record.timestamp = timestamp;
 
-            record.uid = recordRepository.getAll().size() + 1;
-            //recordRepository.insertAll(record);
-            //System.out.println("[DATA] "+"[WRITE] " + " NEW_RECORD"
-              //      + linear_acceleration[0] + " " + linear_acceleration[1] + " " + linear_acceleration[2]);
+            List<SensorRecord> records = recordRepository.getAll();
+            record.uid = records.get(records.size()-1).uid + 1;
+
+            if(records.size() > 840){
+                recordRepository.removeRecord(records.get(0));
+            }
+            recordRepository.insertAll(record);
+            System.out.println("[DATA] "+"[WRITE] " + " NEW_RECORD "
+                    + linear_acceleration[0] + " " + linear_acceleration[1] + " " + linear_acceleration[2]);
 
             recordRepository.close();
         }
